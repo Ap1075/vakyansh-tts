@@ -63,7 +63,7 @@ class vak_tts():
 
         for i,sent in enumerate(split_sentences_list):
             print(f"This is the current sent: {sent}")
-            if sent == "इसीलिये मैं कुछ ऐसे सात अलग अलग बिज़नेस आइडियाज़ के बारे में बात करूंगा, जो ओपन एआई का प्रयोग करके कोई भी कर सकता है" or i%5==0:
+            if i%5==0:
                 print("slowing down")
                 sr, audio = self.run_tts(sent, ls+0.75)
             # if i%7==0:
