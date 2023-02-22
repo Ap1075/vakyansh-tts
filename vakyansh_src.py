@@ -53,14 +53,24 @@ class vak_tts():
         text = json.loads(dat)['translated']
         return text
 
-    def run_tts_paragraph(self, transcript, outfile):
+    def run_tts_paragraph(self, transcript, outfile, ls=0.9):
         audio_list = []
-        text = self.read_txt(transcript)
+        if transcript.endswith(".txt"):
+            text = self.read_txt(transcript)
+        else:
+            text = transcript
         split_sentences_list = self.split_sentences(text)
 
-        for sent in split_sentences_list:
+        for i,sent in enumerate(split_sentences_list):
             print(f"This is the current sent: {sent}")
-            sr, audio = self.run_tts(sent)
+            if sent == "इसीलिये मैं कुछ ऐसे सात अलग अलग बिज़नेस आइडियाज़ के बारे में बात करूंगा, जो ओपन एआई का प्रयोग करके कोई भी कर सकता है" or i%5==0:
+                print("slowing down")
+                sr, audio = self.run_tts(sent, ls+0.75)
+            # if i%7==0:
+            #     print("speeding up")
+            #     sr, audio = self.run_tts(sent, ls-0.1)
+
+            sr, audio = self.run_tts(sent, ls)
             audio_list.append(audio)
 
         concatenated_audio = np.concatenate([i for i in audio_list])
