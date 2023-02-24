@@ -77,6 +77,22 @@ class vak_tts():
         write(filename=outfile, rate=sr, data=concatenated_audio)
         return (sr, concatenated_audio)
 
+    def run_tts_sentence(self, transcript, outfile, ls):
+        # check if transcript list has same elements as ls list
+        if len(transcript) != len(ls):
+            print("The transcript list and length_scale list has mismatched number of elements!!! Cannot proceed ahead and returning!")
+            return
+        audio_list = []
+
+        for sen, ls_sen in zip(transcript, ls):
+            print(f"this is the current sentence: {sen} \n with length_scale value: {ls_sen}")
+            sr, audio = self.run_tts(sen, ls_sen)
+            audio_list.append(audio)
+
+        concatenated_audio = np.concatenate([i for i in audio_list])
+        write(filename=outfile, rate=sr, data=concatenated_audio)
+        return (sr, concatenated_audio)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Text to speech generator')
     parser.add_argument('--outfile', required=False,
